@@ -1,4 +1,4 @@
-package websocket.websocket;
+package websocket.websocket.wsChat;
 
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketMessage;
@@ -8,8 +8,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PriceWebSocketHandler extends TextWebSocketHandler
-{
+public class WebSocketChatHandler extends TextWebSocketHandler {
+
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Override
@@ -21,14 +21,18 @@ public class PriceWebSocketHandler extends TextWebSocketHandler
 
     @Override
     public void handleMessage(WebSocketSession session,
-            WebSocketMessage<?> message) throws Exception
+                              WebSocketMessage<?> message) throws Exception
     {
-
+        System.out.println(message.getPayload());
+        for(WebSocketSession s : sessions)
+        {
+            s.sendMessage(message);
+        }
     }
 
     @Override
     public void handleTransportError(WebSocketSession session,
-            Throwable exception) throws Exception
+                                     Throwable exception) throws Exception
     {
         System.out.println(
                 "Error occurred for session: " + session.getId() + ". Error: " + exception.getMessage());
@@ -36,7 +40,7 @@ public class PriceWebSocketHandler extends TextWebSocketHandler
 
     @Override
     public void afterConnectionClosed(WebSocketSession session,
-            CloseStatus closeStatus) throws Exception
+                                      CloseStatus closeStatus) throws Exception
     {
         sessions.remove(session);
     }

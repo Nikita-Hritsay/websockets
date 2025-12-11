@@ -1,4 +1,4 @@
-package websocket.websocket;
+package websocket.websocket.simpleWebsocket;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
@@ -23,7 +23,7 @@ public class WebSocketPriceBroadcaster
     {
         this.priceWebSocketHandler = priceWebSocketHandler;
         executor.scheduleAtFixedRate(() -> {
-            price = price + (Math.random() - 0.5);   // ?????????? ???
+            price = price + (Math.random() - 0.5);
             broadcast(price);
         }, 1, 1, TimeUnit.SECONDS);
     }
